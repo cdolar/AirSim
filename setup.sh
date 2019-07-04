@@ -28,14 +28,22 @@ if [ "$(uname)" == "Darwin" ]; then # osx
 
     #below takes way too long
     # brew install llvm@3.9
-    brew tap llvm-hs/homebrew-llvm
-    brew install llvm-5.0
+    #brew tap llvm-hs/homebrew-llvm
+    #brew install llvm-5.0
 
     brew install wget
     brew install coreutils
+    
+    if [[ ! -d "llvm-5.0/bin" ]]; then
+    # get clang, libc++
+        mkdir -p llvm-5.0
+        wget "http://releases.llvm.org/5.0.2/clang+llvm-5.0.2-x86_64-apple-darwin.tar.xz"
+        tar -C llvm-5.0 --strip-components=1 -xf "clang+llvm-5.0.2-x86_64-apple-darwin.tar.xz" clang+llvm-5.0.2-x86_64-apple-darwin
+        rm clang+llvm-5.0.2-x86_64-apple-darwin.tar.xz
+    fi
 
-    export C_COMPILER=/usr/local/opt/llvm-5.0/bin/clang-5.0
-    export COMPILER=/usr/local/opt/llvm-5.0/bin/clang++-5.0
+    export C_COMPILER=${PWD}/llvm-5.0/bin/clang-5.0
+    export COMPILER=${PWD}/llvm-5.0/bin/clang++
 else #linux
     if [[ ! -z "${whoami}" ]]; then #this happens when running in travis
         sudo /usr/sbin/useradd -G dialout $USER

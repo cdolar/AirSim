@@ -24,6 +24,7 @@ bld/
 [Oo]bj/
 Intermediate/
 Binaries/
+llvm-5.0/
 llvm-build/
 llvm-source*/
 
